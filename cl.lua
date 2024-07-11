@@ -7,7 +7,7 @@ local clientContainer = {}
 local clientLock = {}
 local rndContainer = nil
 
--- Função para carregar modelos de ped e objetos
+
 function loadModel(model)
     RequestModel(model)
     while not HasModelLoaded(model) do
@@ -15,7 +15,6 @@ function loadModel(model)
     end
 end
 
--- Função para carregar dicionários de animação
 function loadAnimDict(dict)
     RequestAnimDict(dict)
     while not HasAnimDictLoaded(dict) do
@@ -23,7 +22,6 @@ function loadAnimDict(dict)
     end
 end
 
--- Função para carregar assets de PTFX (partículas)
 function loadPtfxAsset(asset)
     RequestNamedPtfxAsset(asset)
     while not HasNamedPtfxAssetLoaded(asset) do
@@ -264,36 +262,35 @@ function SpawnGuards()
 
         local guardPed = CreatePed(4, model, guard.coords.x, guard.coords.y, guard.coords.z, guard.heading, true, true)
 
-        -- Configurar o comportamento de combate do NPC
+
         GiveWeaponToPed(guardPed, GetHashKey("WEAPON_ASSAULTRIFLE"), 250, false, true)
-        SetPedCombatAttributes(guardPed, 46, true) -- Ignorar todos os eventos ao combater
-        SetPedFleeAttributes(guardPed, 0, false) -- Não fugir ao lutar
+        SetPedCombatAttributes(guardPed, 46, true) 
+        SetPedFleeAttributes(guardPed, 0, false) 
         SetPedCombatAbility(guardPed, 2)
         SetPedCombatRange(guardPed, 2)
         SetPedCombatMovement(guardPed, 2)
-        SetPedRelationshipGroupHash(guardPed, GetHashKey("HATES_PLAYER")) -- Relacionamento hostil com o jogador
+        SetPedRelationshipGroupHash(guardPed, GetHashKey("HATES_PLAYER")) 
         TaskCombatPed(guardPed, PlayerPedId(), 0, 16)
 
-        -- Marcar NPCs como inimigos no mapa
+     
         local blip = AddBlipForEntity(guardPed)
         SetBlipAsFriendly(blip, false)
         
-        -- Armazenar os guardas e seus blips
+       
         table.insert(guardPeds, { ped = guardPed, blip = blip })
     end
 end
 
--- Configuração inicial dos grupos de relacionamento
+
 Citizen.CreateThread(function()
     AddRelationshipGroup("GUARDS")
     AddRelationshipGroup("PLAYER")
 
-    -- Configurar relacionamento dos guardas para serem hostis ao jogador
     SetRelationshipBetweenGroups(5, GetHashKey("GUARDS"), GetHashKey("PLAYER"))
     SetRelationshipBetweenGroups(5, GetHashKey("PLAYER"), GetHashKey("GUARDS"))
 end)
 
--- Remover blips dos guardas quando morrerem
+
 Citizen.CreateThread(function()
     while true do
         Wait(1000)
@@ -362,7 +359,7 @@ AddEventHandler('jomidar-ammorobbery:cl:targetsync', function()
     })
 end)
 
---Open crate funtion
+
 
 function openCrate()
     exports['skillchecks']:startUntangleGame(50000, 5, function(success)
