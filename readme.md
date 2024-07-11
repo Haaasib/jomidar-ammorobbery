@@ -1,4 +1,4 @@
-# Jomidar Ammunation Robbery [jomidar-ammorobbery]
+# Jomidar Ammunation Robbery
 * Preview : https://youtu.be/FYKKJBYLWeU
 * NOPIXEL V4 Inspired Ammunation Robbery Scrpt For qb-core
 
