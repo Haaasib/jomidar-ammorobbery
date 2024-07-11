@@ -1,5 +1,7 @@
 Config = {}
 
+Config.CheckForUpdates = true
+
 Config.CoreName = 'qb-core' --core name
 Config.StartPedLoc = vector4(884.68, -953.22, 39.21, 359.05)
 
