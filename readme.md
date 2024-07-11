@@ -12,9 +12,7 @@
 ```
 # Images
 ![Alt text](https://i.ibb.co/T0Q0JN0/Screenshot-1.png)
-![Alt text](https://i.ibb.co/T0Q0JN0/Screenshot-2.png)
-![Alt text](https://i.ibb.co/T0Q0JN0/Screenshot-3.png)
-
+![Alt text](https://i.ibb.co/x1Q2nQg/Screenshot-2.png)
 
 # DEPENDENCIES
 * [SKILLCHECKS](https://github.com/Haaasib/skillchecks/)
