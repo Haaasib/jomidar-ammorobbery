@@ -10,9 +10,9 @@
 2 . Drag And Drop qb-radio you downloaded from github 
 ```
 # Images
-![Alt text](https://i.ibb.co/T0Q0JN0/Screenshot-1.png)"Preview")
-![Alt text](https://i.ibb.co/T0Q0JN0/Screenshot-27.png)"Preview")
-![Alt text](https://i.ibb.co/T0Q0JN0/Screenshot-3.png)"Preview")
+![Alt text](https://i.ibb.co/T0Q0JN0/Screenshot-1.png)
+![Alt text](https://i.ibb.co/T0Q0JN0/Screenshot-27.png)
+![Alt text](https://i.ibb.co/T0Q0JN0/Screenshot-3.png)
 
 # DEPENDENCIES
 * [QBCORE](https://github.com/qbcore-framework/)
