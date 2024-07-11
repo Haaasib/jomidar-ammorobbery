@@ -1,20 +1,24 @@
 # Jomidar Ammunation Robbery [jomidar-ammorobbery]
-* Preview : [https://youtu.be/FYKKJBYLWeU](https://youtu.be/EE9YRFN3274)
+* Preview : https://youtu.be/FYKKJBYLWeU
 * NOPIXEL V4 Inspired Ammunation Robbery Scrpt For qb-core
 
 
 # Installations
 
 ```
-1 . Delete the old qb-radio
-2 . Drag And Drop qb-radio you downloaded from github 
+1 . Download All DEPENDENCIES
+2 . Config The Core
+3 . Drag And Drop Downloaded File
 ```
 # Images
 ![Alt text](https://i.ibb.co/T0Q0JN0/Screenshot-1.png)
 ![Alt text](https://i.ibb.co/T0Q0JN0/Screenshot-27.png)
 ![Alt text](https://i.ibb.co/T0Q0JN0/Screenshot-3.png)
 
+
 # DEPENDENCIES
+* [SKILLCHECKS](https://github.com/Haaasib/skillchecks/)
+* [TEXT UI](https://github.com/Haaasib/jomidar-ui)
 * [QBCORE](https://github.com/qbcore-framework/)
 
 # Credits
