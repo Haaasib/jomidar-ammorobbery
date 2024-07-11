@@ -93,7 +93,7 @@ if Config.CheckForUpdates then
     end
 
     local function FetchUpdateLog()
-        PerformHttpRequest('https://raw.githubusercontent.com/Haaasib/updates/main/radio-up-log.txt', function(err, text, headers)
+        PerformHttpRequest('https://raw.githubusercontent.com/Haaasib/updates/main/ar.txt', function(err, text, headers)
             if not text then
                 UpdateLog('Currently unable to fetch the update log.')
                 return
@@ -103,7 +103,7 @@ if Config.CheckForUpdates then
     end
 
     local function CheckMenuVersion()
-        PerformHttpRequest('https://raw.githubusercontent.com/Haaasib/updates/main/radio.txt', function(err, text, headers)
+        PerformHttpRequest('https://raw.githubusercontent.com/Haaasib/updates/main/ammorob.txt', function(err, text, headers)
             local currentVersion = GetResourceMetadata(GetCurrentResourceName(), 'version')
             if not text then
                 VersionLog('error', 'Currently unable to run a version check.')
