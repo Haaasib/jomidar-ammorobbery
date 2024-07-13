@@ -46,7 +46,7 @@ CreateThread(function()
 
     Wait(100)
 
-    exports['sbrp-target']:AddTargetEntity(startped, {
+    exports['qb-target']:AddTargetEntity(startped, {
         options = {
             { 
                 type = "client",
@@ -67,12 +67,12 @@ AddEventHandler('jomidar-ammorobbery:cl:clear', function()
         DeleteEntity(containers[i])
         DeleteEntity(locks[i])
         DeleteEntity(collisions[i])
-        exports['sbrp-target']:RemoveZone("opencontainers"..i)
+        exports['qb-target']:RemoveZone("opencontainers"..i)
         Config['containers'][i]['lock']['taken'] = false
         DeleteEntity(clientContainer[i])
         DeleteEntity(clientLock[i])
     end
-    exports['sbrp-target']:RemoveTargetEntity(weaponBox, 'Open Crate')
+    exports['qb-target']:RemoveTargetEntity(weaponBox, 'Open Crate')
     DeleteEntity(weaponBox)
     print("limpou")
     
@@ -344,7 +344,7 @@ end)
 RegisterNetEvent('jomidar-ammorobbery:cl:targetsync')
 AddEventHandler('jomidar-ammorobbery:cl:targetsync', function()
 
-    exports['sbrp-target']:AddTargetEntity(weaponBox, {
+    exports['qb-target']:AddTargetEntity(weaponBox, {
         options = {
             { 
                 icon = "fas fa-user-secret",
@@ -396,12 +396,12 @@ AddEventHandler('onResourceStop', function (resource)
             DeleteEntity(containers[i])
             DeleteEntity(locks[i])
             DeleteEntity(collisions[i])
-            exports['sbrp-target']:RemoveZone("opencontainers"..i)
+            exports['qb-target']:RemoveZone("opencontainers"..i)
             Config['containers'][i]['lock']['taken'] = false
             DeleteEntity(clientContainer[i])
             DeleteEntity(clientLock[i])
         end
-        exports['sbrp-target']:RemoveTargetEntity(weaponBox, 'Open Crate')
+        exports['qb-target']:RemoveTargetEntity(weaponBox, 'Open Crate')
         DeleteEntity(weaponBox)
         exports['jomidar-ui']:Close()
     end
