@@ -3,7 +3,7 @@ lua54 'yes'
 game 'gta5'
 
 name         'jomidar-ammorobbery'
-version      '1.0.0'
+version      '1.0.2'
 description  'A multi-framework  Ammo Robbery'
 author       'Hasib'
 
