@@ -9,6 +9,7 @@
 1 . Download All DEPENDENCIES
 2 . Config The Core
 3 . Drag And Drop Downloaded File
+4 . If you are getting stash issue then check the cfg.lua and make config.usestash = false .
 ```
 # Images
 ![Alt text](https://i.ibb.co/T0Q0JN0/Screenshot-1.png)
