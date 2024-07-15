@@ -59,6 +59,15 @@ AddEventHandler('jomidar-ammorobbery:sv:synctarget', function()
     AddItemsToStash(stashName, newItems)
 end)
 
+RegisterNetEvent('Jommidar-ammorobbery:AddItem', function(itemName, itemAmount)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if Player then
+        Player.Functions.AddItem(itemName, itemAmount)
+        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[itemName], "add")
+    end
+end)
+
 RegisterServerEvent('jomidar-ammorobbery:sv:ClearSync')
 AddEventHandler('jomidar-ammorobbery:sv:ClearSync', function()
     TriggerClientEvent("jomidar-ammorobbery:cl:clear", -1)
