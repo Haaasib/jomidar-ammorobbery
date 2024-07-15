@@ -361,34 +361,39 @@ end)
 
 
 
+function getRandomItem(items)
+    local itemIndex = math.random(1, #items)
+    return items[itemIndex]
+end
+
+-- Open crate function
 function openCrate()
     exports['skillchecks']:startUntangleGame(50000, 5, function(success)
         if success then
-            TriggerServerEvent('inventory:server:OpenInventory', 'stash', "WeaponCrate",  {
-                maxweight = 1000000,
-                slots = 10,
-            })
-            TriggerEvent('inventory:client:SetCurrentStash', "WeaponCrate")
+            if Config.UseStash then 
+                TriggerServerEvent('inventory:server:OpenInventory', 'stash', "WeaponCrate",  {
+                    maxweight = 1000000,
+                    slots = 10,
+                })
+                TriggerEvent('inventory:client:SetCurrentStash', "WeaponCrate")
+            else
+                QBCore.Functions.Progressbar("opencontainer", "Opening the crate...", 7000, false, false, {
+                    disableMovement = true,
+                    disableCarMovement = false,
+                    disableMouse = false,
+                    disableCombat = true,
+                }, {}, {}, {}, function()
+                    local item = getRandomItem(Config.WithoutStashItem)
+                    TriggerServerEvent('Jommidar-ammorobbery:AddItem', item.name, item.amount)
+                    exports['sbrp-target']:RemoveTargetEntity(weaponBox)
+                end)
+            end
         else
             QBCore.Functions.Notify("You Failed, Try again!", "error")
-
         end
     end)
-    /*
-    QBCore.Functions.Progressbar("opencontainer", "Opening the crate...", 7000, false, false, {
-        disableMovement = true,
-        disableCarMovement = false,
-        disableMouse = false,
-        disableCombat = true,
-    }, {}, {}, {}, function()
-        TriggerServerEvent('inventory:server:OpenInventory', 'stash', "WeaponCrate",  {
-            maxweight = 1000000,
-            slots = 10,
-        })
-        TriggerEvent('inventory:client:SetCurrentStash', "WeaponCrate")
-    end)
-    */
 end
+
 
 AddEventHandler('onResourceStop', function (resource)
     if resource == GetCurrentResourceName() then
