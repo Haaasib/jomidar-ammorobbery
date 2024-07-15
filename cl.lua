@@ -396,7 +396,7 @@ end
 
 function checkStash()
     if Config.UseStash then
-        print("if you get stash issue then make it false")
+        print("if you get stash issue then make Config.UseStash = true to Config.UseStash = false")
     end
 end
 
