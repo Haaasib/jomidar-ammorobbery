@@ -70,7 +70,7 @@ Config['containers'] = {
 }
 
 --Items that drop in crate, if you want to randomize it just add more sub-lists
-Config.UseStash = false -- make it false if you re using latest qb inventory or any other inventory or you are not getting items in your stash
+Config.UseStash = true -- make it false if you re using latest qb inventory or any other inventory or you are not getting items in your stash
 
 Config.WithoutStashItem = {  --- if usestash is false then config item here. and its rnd from here player will get 1 item
     { name = "weapon_smg", amount = 1 },
