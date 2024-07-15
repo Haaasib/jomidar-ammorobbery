@@ -394,6 +394,17 @@ function openCrate()
     end)
 end
 
+function checkStash()
+    if Config.UseStash then
+        print("if you get stash issue then make it false")
+    end
+end
+
+AddEventHandler('onResourceStart', function(resourceName)
+    if GetCurrentResourceName() == resourceName then
+        checkStash()
+    end
+end)
 
 AddEventHandler('onResourceStop', function (resource)
     if resource == GetCurrentResourceName() then
