@@ -385,7 +385,7 @@ function openCrate()
                 }, {}, {}, {}, function()
                     local item = getRandomItem(Config.WithoutStashItem)
                     TriggerServerEvent('Jommidar-ammorobbery:AddItem', item.name, item.amount)
-                    exports['sbrp-target']:RemoveTargetEntity(weaponBox)
+                    exports['qb-target']:RemoveTargetEntity(weaponBox)
                 end)
             end
         else
