@@ -424,3 +424,4 @@ AddEventHandler('onResourceStop', function (resource)
         exports['jomidar-ui']:Close()
     end
 end)
+
