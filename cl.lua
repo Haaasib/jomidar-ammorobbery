@@ -28,6 +28,34 @@ function loadPtfxAsset(asset)
     end
 end
 
+local function hasItem(item)
+    if exports['ox_inventory'] then
+        local count = exports.ox_inventory:Search('count', item)
+        return count and count > 0
+    else
+        local itemInfo = QBCore.Functions.HasItem(item)
+        if type(itemInfo) == "table" then
+            return itemInfo.amount and itemInfo.amount > 0
+        else
+            return itemInfo
+        end
+    end
+end
+
+local function handleContainerOpen(k)
+    local result = hasItem(Config.requiredItem)
+    print("HasItem result:", result) -- Debugging output
+    if result then
+        if not Config['containers'][k]['lock']['taken'] then
+            OpenContainer(k)
+        else
+            QBCore.Functions.Notify("Already Open", "error")
+        end
+    else
+        QBCore.Functions.Notify("No Item", "error")
+    end
+end
+
 local function addTargetEntity(entity, options, distance)
     if exports['qb-target'] then
         exports['qb-target']:AddTargetEntity(entity, {
@@ -35,7 +63,8 @@ local function addTargetEntity(entity, options, distance)
             distance = distance
         })
     elseif exports['ox_target'] then
-        exports['ox_target']:AddTargetEntity(entity, {
+        exports['ox_target']:AddTarget({
+            entity = entity,
             options = options,
             distance = distance
         })
@@ -48,7 +77,12 @@ local function addCircleZone(name, center, radius, options, targetOptions)
     if exports['qb-target'] then
         exports['qb-target']:AddCircleZone(name, center, radius, options, targetOptions)
     elseif exports['ox_target'] then
-        exports['ox_target']:AddCircleZone(name, center, radius, options, targetOptions)
+        exports['ox_target']:AddCircleZone(name, center, radius, {
+            options = targetOptions.options,
+            distance = targetOptions.distance,
+            debug = options.debugPoly,
+            useZ = options.useZ
+        })
     else
         print("No target system found.")
     end
@@ -68,9 +102,21 @@ local function removeTargetEntity(entity, label)
     if exports['qb-target'] then
         exports['qb-target']:RemoveTargetEntity(entity, label)
     elseif exports['ox_target'] then
-        exports['ox_target']:RemoveTargetEntity(entity, label)
+        exports['ox_target']:RemoveTarget(entity)
     else
         print("No target system found.")
+    end
+end
+
+local function openInventory(stashId)
+    if exports['ox_inventory'] then
+        exports.ox_inventory:openInventory('stash', stashId)
+    else
+        TriggerServerEvent('inventory:server:OpenInventory', 'stash', stashId, {
+            maxweight = 1000000,
+            slots = 10,
+        })
+        TriggerEvent('inventory:client:SetCurrentStash', stashId)
     end
 end
 
@@ -148,7 +194,7 @@ function SetupContainers()
     EndTextCommandSetBlipName(containersBlip)
 
     loadModel('prop_ld_container')
-    rndContainer = math.random(1,#Config['containers'])
+    rndContainer = math.random(1, #Config['containers'])
 
     print(rndContainer)
     if rndContainer == 1 then
@@ -182,34 +228,24 @@ function SetupContainers()
         FreezeEntityPosition(locks[k], true)
 
         addCircleZone("opencontainers"..k, v.target, 1.0, {
-            name ="opencontainers"..k,
+            name = "opencontainers"..k,
             useZ = true,
-            debugPoly=false
-            }, {
-                options = {
-                    {
-                        action = function()
-                            local result = QBCore.Functions.HasItem(Config.requiredItem)
-                            if result then
-                                if not Config['containers'][k]['lock']['taken'] then
-                                    OpenContainer(k)
-                                else
-                                    QBCore.Functions.Notify("Already Open", "error")
-                                end
-                            else
-                                QBCore.Functions.Notify("no Item", "error")
-                            end
-                        end,
-                        icon = "fas fa-user-secret",
-                        label = "Open Container",
-                    },
-                 },
-                job = {"all"},
-                distance = 1.5,
+            debugPoly = false
+        }, {
+            options = {
+                {
+                    event = "jomidar-ammorobbery:handleContainerOpen",
+                    icon = "fas fa-user-secret",
+                    label = "Open Container",
+                    args = k
+                },
+            },
+            job = {"all"},
+            distance = 1.5,
         })
     end
 
-    weaponBox = CreateObject(GetHashKey("ex_prop_crate_ammo_sc"), vector3(Config['containers'][rndContainer].box.x,Config['containers'][rndContainer].box.y,Config['containers'][rndContainer].box.z), 1, 1, 0)
+    weaponBox = CreateObject(GetHashKey("ex_prop_crate_ammo_sc"), vector3(Config['containers'][rndContainer].box.x, Config['containers'][rndContainer].box.y, Config['containers'][rndContainer].box.z), 1, 1, 0)
     SetEntityHeading(weaponBox, Config['containers'][rndContainer].box.w)
     FreezeEntityPosition(weaponBox, true)
     TriggerServerEvent("jomidar-ammorobbery:sv:synctarget")
@@ -231,7 +267,7 @@ function OpenContainer(index)
     loadAnimDict(animDict)
     loadPtfxAsset('scr_tn_tr')
     TriggerServerEvent('jomidar-ammorobbery:sv:lockSync', index)
-    
+
     for i = 1, #ContainerAnimation['objects'] do
         loadModel(ContainerAnimation['objects'][i])
         ContainerAnimation['sceneObjects'][i] = CreateObject(GetHashKey(ContainerAnimation['objects'][i]), pedCo, 1, 1, 0)
@@ -294,7 +330,7 @@ function SpawnGuards()
 
         local blip = AddBlipForEntity(guardPed)
         SetBlipAsFriendly(blip, false)
-        
+
         table.insert(guardPeds, { ped = guardPed, blip = blip })
     end
 end
@@ -326,7 +362,7 @@ AddEventHandler('jomidar-ammorobbery:cl:containerSync', function(coords, rotatio
 
     clientContainer[index] = CreateObject(GetHashKey(Config['containers'][index].containerModel), coords, 0, 0, 0)
     clientLock[index] = CreateObject(GetHashKey('tr_prop_tr_lock_01a'), coords, 0, 0, 0)
-        
+
     clientScene = CreateSynchronizedScene(coords, rotation, 2, true, false, 1065353216, 0, 1065353216)
     PlaySynchronizedEntityAnim(clientContainer[index], clientScene, ContainerAnimation['animations'][1][2], animDict, 1.0, -1.0, 0, 1148846080)
     ForceEntityAiAndAnimationUpdate(clientContainer[index])
@@ -373,11 +409,7 @@ function openCrate()
     exports['skillchecks']:startUntangleGame(50000, 5, function(success)
         if success then
             if Config.UseStash then 
-                TriggerServerEvent('inventory:server:OpenInventory', 'stash', "WeaponCrate",  {
-                    maxweight = 1000000,
-                    slots = 10,
-                })
-                TriggerEvent('inventory:client:SetCurrentStash', "WeaponCrate")
+                openInventory("WeaponCrate")
             else
                 QBCore.Functions.Progressbar("opencontainer", "Opening the crate...", 7000, false, false, {
                     disableMovement = true,
@@ -425,3 +457,7 @@ AddEventHandler('onResourceStop', function (resource)
     end
 end)
 
+RegisterNetEvent('jomidar-ammorobbery:handleContainerOpen')
+AddEventHandler('jomidar-ammorobbery:handleContainerOpen', function(k)
+    handleContainerOpen(k)
+end)
