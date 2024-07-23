@@ -31,9 +31,11 @@ end
 local function hasItem(item)
     if exports['ox_inventory'] then
         local count = exports.ox_inventory:Search('count', item)
+        print('ox_inventory count:', count) -- Debugging output
         return count and count > 0
     else
         local itemInfo = QBCore.Functions.HasItem(item)
+        print('qb-inventory itemInfo:', json.encode(itemInfo)) -- Debugging output
         if type(itemInfo) == "table" then
             return itemInfo.amount and itemInfo.amount > 0
         else
