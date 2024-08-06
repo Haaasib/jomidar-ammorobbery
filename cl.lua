@@ -383,9 +383,9 @@ function openCrate()
                     disableMouse = false,
                     disableCombat = true,
                 }, {}, {}, {}, function()
+                    exports['qb-target']:RemoveTargetEntity(weaponBox)
                     local item = getRandomItem(Config.WithoutStashItem)
                     TriggerServerEvent('Jommidar-ammorobbery:AddItem', item.name, item.amount)
-                    exports['qb-target']:RemoveTargetEntity(weaponBox)
                 end)
             end
         else
